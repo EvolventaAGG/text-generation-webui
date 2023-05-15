@@ -154,6 +154,7 @@ def generate_reply_wrapper(question, state, eos_token=None, stopping_strings=Non
         yield formatted_outputs(reply, shared.model_name)
 
 
+
 def generate_reply(question, state, eos_token=None, stopping_strings=None, is_chat=False):
     state = apply_extensions('state', state)
     generate_func = apply_extensions('custom_generate_reply')
@@ -162,7 +163,6 @@ def generate_reply(question, state, eos_token=None, stopping_strings=None, is_ch
             logging.error("No model is loaded! Select one in the Model tab.")
             yield question
             return
-
         if shared.model_type in ['rwkv', 'llamacpp']:
             generate_func = generate_reply_custom
         elif shared.args.flexgen:
@@ -187,7 +187,7 @@ def generate_reply(question, state, eos_token=None, stopping_strings=None, is_ch
 
 def generate_reply_HF(question, original_question, seed, state, eos_token=None, stopping_strings=None, is_chat=False):
     generate_params = {}
-    for k in ['max_new_tokens', 'do_sample', 'temperature', 'top_p', 'typical_p', 'repetition_penalty', 'encoder_repetition_penalty', 'top_k', 'min_length', 'no_repeat_ngram_size', 'num_beams', 'penalty_alpha', 'length_penalty', 'early_stopping']:
+    for k in ['max_new_tokens', 'do_sample', 'temperature', 'top_p', 'typical_p', 'repetition_penalty', 'encoder_repetition_penalty', 'top_k', 'epsilon_cutoff', 'eta_cutoff', 'min_length', 'no_repeat_ngram_size', 'num_beams', 'penalty_alpha', 'length_penalty', 'early_stopping']:
         generate_params[k] = state[k]
 
     if state['ban_eos_token']:
